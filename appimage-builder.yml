@@ -33,7 +33,7 @@ AppDir:
     include:
       - openttd-opengfx
       - x11-utils
-      - openttd-opensfx
+      - librsvg2-common
       - timidity
       - freepats
       - libfontconfig1
