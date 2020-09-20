@@ -19,7 +19,7 @@ AppDir:
     exec: usr/games/openttd
   runtime:
     env:
-      APPDIR_LIBRARY_PATH: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/local/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio/
+      APPDIR_LIBRARY_PATH: $APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/usr/local/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio/:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
     path_mappings:
       - /usr/share/games/openttd:$APPDIR/usr/share/games/openttd
 
@@ -33,7 +33,6 @@ AppDir:
     include:
       - openttd-opengfx
       - x11-utils
-      - librsvg2-common
       - timidity
       - freepats
       - libfontconfig1
