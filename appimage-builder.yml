@@ -47,6 +47,7 @@ AppDir:
       - libsdl2-2.0-0
       - libstdc++6
       - zlib1g
+      - libfluidsynth1
     exclude:
       - humanity-icon-theme
       - adwaita-icon-theme
