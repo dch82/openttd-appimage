@@ -43,6 +43,7 @@ AppDir:
       - libxdg-basedir1
       - timidity
       - zlib1g
+      - libfluidsynth2
     exclude:
       - adwaita-icon-theme
       - dpkg-dev
