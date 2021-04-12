@@ -4,18 +4,18 @@ script:
   - rm -rf AppDir  || true
   # Make usr and icons dirs
   - mkdir -p AppDir/
-  - wget -c "https://cdn.openttd.org/openttd-releases/1.10.3/openttd-1.10.3-linux-ubuntu-bionic-amd64.deb"
-  - dpkg-deb -x openttd-1.10.3-linux-ubuntu-bionic-amd64.deb AppDir
+  - wget -c "https://cdn.openttd.org/openttd-releases/1.11.0/openttd-1.11.0-linux-ubuntu-bionic-amd64.deb"
+  - dpkg-deb -x openttd-1.11.0-linux-ubuntu-bionic-amd64.deb AppDir
 
 
 AppDir:
   path: ./AppDir
 
   app_info:
-    id: openttd
+    id: org.openttd
     name: openttd
     icon: openttd
-    version: 1.10.3
+    version: 1.11.0
     exec: usr/games/openttd
   runtime:
     env:
