@@ -1,4 +1,3 @@
 AppDir
-appimage-builder-cache
-*.deb
+*.tar.xz
 *.AppImage*

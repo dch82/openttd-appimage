@@ -1,95 +1,47 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
 version: 1
 script:
-  # Remove any previous build
-  - rm -rf AppDir  || true
-  # Make usr and icons dirs
-  - mkdir -p AppDir/
-  - wget -c "https://cdn.openttd.org/openttd-releases/1.11.0/openttd-1.11.0-linux-ubuntu-focal-amd64.deb"
-  - dpkg-deb -x openttd-1.11.0-linux-ubuntu-focal-amd64.deb AppDir
-
-
+  - rm -rf $TARGET_APPDIR openttd-13.4-linux-generic-amd64.tar.xz
+  - wget https://cdn.openttd.org/openttd-releases/13.4/openttd-13.4-linux-generic-amd64.tar.xz
+  - tar -xf openttd-13.4-linux-generic-amd64.tar.xz
+  - diff <(sha256sum openttd-13.4-linux-generic-amd64.tar.xz | cut -f1 -d ' ') <(echo "943b7be04130ea790323f70bf5476ccf17692a6e89790748e90aa590b7db4370")
+  - mv openttd-13.4-linux-generic-amd64 $TARGET_APPDIR
+  - mkdir $TARGET_APPDIR/usr
+  - mv $TARGET_APPDIR/share $TARGET_APPDIR/usr/share
 AppDir:
   path: ./AppDir
-
   app_info:
-    id: org.openttd
-    name: openttd
+    id: org.openttd.OpenTTD
+    name: OpenTTD
     icon: openttd
-    version: 1.11.0
-    exec: usr/games/openttd
-  runtime:
-    env:
-      APPDIR_LIBRARY_PATH: $APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/usr/local/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio/:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
-    path_mappings:
-      - /usr/share/games/openttd:$APPDIR/usr/share/games/openttd
-
-
-  apt:
-    arch: amd64
-    sources:
-      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse'
-      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse'
-      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse'
-        key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3b4fe6acc0b21f32'
-
+    version: '13.4'
+    exec: openttd
+    exec_args: $@
+  files:
     include:
-      - freepats
-      - libicu66
-      - liblzma5
-      - liblzo2-2
-      - libpng16-16
-      - libsdl1.2debian
-      - libsdl2-2.0-0
-      - libxdg-basedir1
-      - timidity
-      - zlib1g
-      - libfluidsynth2
+    - lib64/ld-linux-x86-64.so.2
     exclude:
-      - adwaita-icon-theme
-      - dpkg-dev
-      - humanity-icon-theme
-      - make
-      - patch
-      - perl
-      - perl-base
-      - pkg-config
-      - python3
-      - python3-minimal
-      - python3.6
-      - python3.6-minimal
-
-  after_bundle: |
-    echo "source /etc/timidity/freepats.cfg" | tee AppDir/etc/timidity/timidity.cfg
-
-  runtime:
-    path_mappings:
-      - /usr/share/games/openttd:$APPDIR/usr/share/games/openttd
-      - /etc/timidity:$APPDIR/etc/timidity
-      - /usr/lib/timidity:$APPDIR/usr/lib/timidity
-
+    - usr/share/man
+    - usr/share/doc/*/README.*
+    - usr/share/doc/*/changelog.*
+    - usr/share/doc/*/NEWS.*
+    - usr/share/doc/*/TODO.*
   test:
-    fedora:
+    fedora-30:
       image: appimagecrafters/tests-env:fedora-30
       command: ./AppRun
-      use_host_x: true
-    debian:
+    debian-stable:
       image: appimagecrafters/tests-env:debian-stable
       command: ./AppRun
-      use_host_x: true
-    arch:
+    archlinux-latest:
       image: appimagecrafters/tests-env:archlinux-latest
       command: ./AppRun
-      use_host_x: true
-    centos:
+    centos-7:
       image: appimagecrafters/tests-env:centos-7
       command: ./AppRun
-      use_host_x: true
-    ubuntu:
+    ubuntu-xenial:
       image: appimagecrafters/tests-env:ubuntu-xenial
       command: ./AppRun
-      use_host_x: true
-
 AppImage:
-  update-information: "gh-releases-zsync|azubieta|openttd-appimage|latest|*x86_64.AppImage.zsync"
-  sign-key: None
-  arch: x86_64 
+  arch: x86_64
+  update-information: guess
